@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Document Chatbot</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 30px 15px;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px #00000012;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-top: 25px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #334155;
+        }
+
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 13px;
+            margin-top: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 15px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            min-height: 65px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .sources {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .source-item {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-left: 3px solid #2563eb;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>AI Document Chatbot</h1>
+
+    <p class="subtitle">
+        Upload your document and get answers using Gemini AI.
+    </p>
+
+    <div class="section">
+
+        <h3>1. Upload Your Document</h3>
+
+        <input
+            type="file"
+            id="file"
+            accept=".pdf,.txt"
+        >
+
+        <p class="status" id="fileStatus">
+            Supported formats: PDF and TXT (maximum 10 MB)
+        </p>
+
+        <button id="uploadBtn" onclick="uploadDocument()">
+            Upload Document
+        </button>
+
+    </div>
+
+    <div class="section">
+
+        <h3>2. Ask a Question</h3>
+
+        <textarea
+            id="question"
+            placeholder="Ask something about your uploaded document..."
+        ></textarea>
+
+        <button id="askBtn" onclick="askQuestion()">
+            Ask Gemini AI
+        </button>
+
+    </div>
+
+    <div id="result">
+        Upload a document to get started.
+    </div>
+
+    <div id="sources"></div>
+
+</div>
+
+<script>
+
+    let documentUploaded = false;
+
+    async function uploadDocument() {
+
+        const file = document.getElementById("file").files[0];
+        const result = document.getElementById("result");
+        const status = document.getElementById("fileStatus");
+        const button = document.getElementById("uploadBtn");
+
+        if (!file) {
+            result.textContent = "Please select a document first.";
+            return;
+        }
+
+        if (!/\.(pdf|txt)$/i.test(file.name)) {
+            result.textContent = "Please select a PDF or TXT file.";
+            return;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+            result.textContent = "File must be 10 MB or smaller.";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        button.disabled = true;
+        button.textContent = "Uploading...";
+        result.textContent = "Processing your document...";
+        document.getElementById("sources").innerHTML = "";
+
+        try {
+
+            const response = await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.detail || "Upload failed.");
+            }
+
+            documentUploaded = true;
+
+            status.textContent = "Uploaded: " + data.filename;
+
+            result.textContent =
+                "Document uploaded successfully!\n" +
+                "You can now ask questions about your document.";
+
+        } catch (error) {
+
+            documentUploaded = false;
+            result.textContent = "Upload failed: " + error.message;
+
+        } finally {
+
+            button.disabled = false;
+            button.textContent = "Upload Document";
+
+        }
+    }
+
+
+    async function askQuestion() {
+
+        const question = document
+            .getElementById("question")
+            .value.trim();
+
+        const result = document.getElementById("result");
+        const sources = document.getElementById("sources");
+        const button = document.getElementById("askBtn");
+
+        if (!documentUploaded) {
+            result.textContent = "Please upload a document first.";
+            return;
+        }
+
+        if (!question) {
+            result.textContent = "Please enter a question.";
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Generating Answer...";
+        result.textContent = "Gemini AI is analyzing your document...";
+        sources.innerHTML = "";
+
+        try {
+
+            const response = await fetch("/ask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    question: question
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.detail || "Question failed.");
+            }
+
+            result.textContent = "Answer:\n\n" + (
+                data.answer || "No answer was generated."
+            );
+
+            if (data.sources && data.sources.length > 0) {
+
+                sources.innerHTML = "<div class='sources'><strong>Document Sources</strong></div>";
+
+                data.sources.forEach(source => {
+
+                    const item = document.createElement("div");
+                    item.className = "source-item";
+
+                    const heading = document.createElement("strong");
+                    heading.textContent =
+                        source.document + " — Section " + source.section;
+
+                    const excerpt = document.createElement("p");
+                    excerpt.textContent = source.excerpt;
+
+                    item.appendChild(heading);
+                    item.appendChild(excerpt);
+
+                    sources.querySelector(".sources").appendChild(item);
+
+                });
+            }
+
+        } catch (error) {
+
+            result.textContent = "Question failed: " + error.message;
+
+        } finally {
+
+            button.disabled = false;
+            button.textContent = "Ask Gemini AI";
+
+        }
+    }
+
+</script>
+
+</body>
+</html>
