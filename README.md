@@ -1,20 +1,14 @@
 # 🤖 AI-Powered Document Chatbot
 
-An AI-powered chatbot that allows users to upload PDF and TXT documents and ask questions about their content. It uses Gemini AI to generate answers based on the uploaded documents and displays relevant source information.
+An AI-powered chatbot that allows users to upload PDF and TXT documents and ask questions about their content. It uses Google Gemini AI to generate answers based on the uploaded documents and displays relevant source information.
 
-## 🚀 Project Overview
-
-The AI Document Chatbot makes it easier to find information in documents. Instead of manually reading long files, users can upload a document and ask questions in natural language.
-
-The application processes the document, retrieves relevant text sections, and uses Gemini AI to generate answers based on the available content.
-
-## ✨ Features
+## 🚀 Features
 
 - Upload PDF and TXT documents
 - Extract text from uploaded documents
 - Split document text into smaller chunks
 - Retrieve relevant sections based on user questions
-- Generate AI-powered answers using Gemini AI
+- Generate answers using Google Gemini AI
 - Display source document and relevant excerpts
 - Simple and user-friendly chatbot interface
 
@@ -25,7 +19,7 @@ The application processes the document, retrieves relevant text sections, and us
 - **AI Integration:** Google Gemini API
 - **Frontend:** HTML, CSS, JavaScript
 - **Document Processing:** PyPDF
-- **Development Tools:** VS Code, Git, GitHub
+- **Tools:** VS Code, Git, GitHub
 
 ## ⚙️ How It Works
 
@@ -35,7 +29,7 @@ The application processes the document, retrieves relevant text sections, and us
 4. When the user asks a question, the application searches for relevant document sections.
 5. The relevant context and question are sent to Gemini AI.
 6. Gemini generates an answer based on the document context.
-7. The chatbot displays the answer along with its source information.
+7. The chatbot displays the answer along with source information.
 
 ## 💻 Installation and Setup
 
@@ -97,6 +91,12 @@ Visit:
 http://127.0.0.1:8000
 ```
 
+API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
 ## 🎯 Learning Outcomes
 
 Through this project, I gained practical experience in:
@@ -112,8 +112,8 @@ Through this project, I gained practical experience in:
 
 **Anantha**
 
-GitHub: [anantha-data415](https://github.com/anantha-data415)
+GitHub: https://github.com/anantha-data415
 
 ## 📌 Project Repository
 
-[AI-Powered Document Chatbot](https://github.com/anantha-data415/AI-Document-Chatbot)
+https://github.com/anantha-data415/AI-Document-Chatbot
