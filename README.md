@@ -117,3 +117,12 @@ GitHub: https://github.com/anantha-data415
 ## 📌 Project Repository
 
 https://github.com/anantha-data415/AI-Document-Chatbot
+
+
+## Screenshots
+
+### Chatbot Home Page
+![Chatbot Home Page](home.png)
+
+### Document Question and Answer
+![Document Question and Answer](question-answer.png)
