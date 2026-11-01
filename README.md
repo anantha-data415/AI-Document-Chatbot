@@ -1,52 +1,119 @@
-# AI Document Chatbot (Original Starter Project)
+# 🤖 AI-Powered Document Chatbot
 
-A starter full-stack project for asking questions about uploaded PDF or TXT documents.
+An AI-powered chatbot that allows users to upload PDF and TXT documents and ask questions about their content. It uses Gemini AI to generate answers based on the uploaded documents and displays relevant source information.
 
-## Features
-- React chat interface
-- FastAPI backend
-- PDF/TXT upload and text extraction
-- Simple retrieval from document chunks
-- Optional local LLM integration through Ollama (no paid API key required)
-- Clear fallback answer when no relevant document text is found
+## 🚀 Project Overview
 
-## Important
-This is an original starter implementation, not a production-ready RAG system. The basic retrieval uses keyword overlap. For stronger semantic retrieval, add embeddings and a vector database later. Review, run, test, and customize it before presenting it in a portfolio.
+The AI Document Chatbot makes it easier to find information in documents. Instead of manually reading long files, users can upload a document and ask questions in natural language.
 
-## Requirements
-- Python 3.10+
-- Node.js 18+
-- Optional: Ollama installed locally with a model pulled (for example `ollama pull llama3.2`)
+The application processes the document, retrieves relevant text sections, and uses Gemini AI to generate answers based on the available content.
 
-## Run the backend
+## ✨ Features
+
+- Upload PDF and TXT documents
+- Extract text from uploaded documents
+- Split document text into smaller chunks
+- Retrieve relevant sections based on user questions
+- Generate AI-powered answers using Gemini AI
+- Display source document and relevant excerpts
+- Simple and user-friendly chatbot interface
+
+## 🛠️ Technologies Used
+
+- **Programming Language:** Python
+- **Backend:** FastAPI
+- **AI Integration:** Google Gemini API
+- **Frontend:** HTML, CSS, JavaScript
+- **Document Processing:** PyPDF
+- **Development Tools:** VS Code, Git, GitHub
+
+## ⚙️ How It Works
+
+1. The user uploads a PDF or TXT document.
+2. The backend extracts text from the document.
+3. The extracted text is divided into smaller chunks.
+4. When the user asks a question, the application searches for relevant document sections.
+5. The relevant context and question are sent to Gemini AI.
+6. Gemini generates an answer based on the document context.
+7. The chatbot displays the answer along with its source information.
+
+## 💻 Installation and Setup
+
+### 1. Clone the repository
+
 ```bash
-cd backend
-python -m venv .venv
-# Windows:
-.venv\\Scripts\\activate
-# macOS/Linux:
-source .venv/bin/activate
+git clone https://github.com/anantha-data415/AI-Document-Chatbot.git
+```
+
+### 2. Open the project folder
+
+```bash
+cd AI-Document-Chatbot
+```
+
+### 3. Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+### 4. Activate the virtual environment
+
+**Windows:**
+
+```powershell
+venv\Scripts\activate
+```
+
+### 5. Install dependencies
+
+```bash
 pip install -r requirements.txt
-uvicorn app.main:app --reload
 ```
-Backend runs at http://127.0.0.1:8000. API docs: http://127.0.0.1:8000/docs
 
-## Run the frontend
-Open a second terminal:
+### 6. Configure the Gemini API key
+
+Create a `.env` file inside `backend/app/` and add:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+Replace the placeholder with your own Gemini API key. Never upload your actual API key to GitHub.
+
+### 7. Run the application
+
+From the project root folder, run:
+
 ```bash
-cd frontend
-npm install
-npm run dev
+python -m uvicorn backend.app.main:app --reload
 ```
-Open the local URL shown by Vite.
 
-## Optional local AI
-Install Ollama and pull a model. Set `OLLAMA_MODEL` if you want a different model name.
-The backend attempts to call Ollama at `http://localhost:11434/api/generate`. If Ollama is unavailable, it returns the relevant retrieved text as a simple extractive response.
+### 8. Open the application
 
-## Suggested next improvements
-- Add semantic embeddings and vector search
-- Add tests and input-size limits
-- Add document deletion and per-session document isolation
-- Add citations/page numbers for retrieved chunks
-- Add authentication before deploying publicly
+Visit:
+
+```text
+http://127.0.0.1:8000
+```
+
+## 🎯 Learning Outcomes
+
+Through this project, I gained practical experience in:
+
+- Python application development
+- Building REST APIs using FastAPI
+- Integrating third-party AI APIs
+- PDF and text document processing
+- Text chunking and keyword-based retrieval
+- Connecting frontend and backend components
+
+## 👩‍💻 Developer
+
+**Anantha**
+
+GitHub: [anantha-data415](https://github.com/anantha-data415)
+
+## 📌 Project Repository
+
+[AI-Powered Document Chatbot](https://github.com/anantha-data415/AI-Document-Chatbot)
